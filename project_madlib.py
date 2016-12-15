@@ -4,7 +4,9 @@
 
 
 placeHolders = ['___1___','___2___','___3___','___4___']
-anwsers = ['function','quotes','nothing','list']
+anwsers = [['function','quotes','nothing','list'],
+		   ['function','quotes','nothing','list'],
+           ['function','quotes','nothing','list']]
 
 sample = '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
 adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
@@ -20,12 +22,21 @@ tuple, and ___4___ or can be more complicated such as objects and lambda functio
 ## go through string to find all instantances of the current answer
 ## wash and repeat 
 
-def letsPlay(text):
+def chooseLevel():
+	user_choice = ""
+	rightAnswers = ['easy','medium','hard']
+	while user_choice not in rightAnswers:
+		user_choice = raw_input("what level do you want to play: Easy | Medium | Hard\n").lower() 
+	return user_choice
+
+def letsPlay(text,difficulty_level):
 	index = 0
+	print text
 	while index < len(placeHolders):
 		replaced = []
 		text = text.split(" ")
-		user_choice = raw_input("what is the "+str(index+1)+" answer\n").lower()
+		rightAnswers = anwsers[0] # need to fix later
+		user_choice = checkAnswer(rightAnswers[index])
 		for word in text:
 			if placeHolders[index] in word:
 				word = word.replace(placeHolders[index],user_choice)
@@ -34,13 +45,18 @@ def letsPlay(text):
 		print text
 		index +=1	
 	
-def chooseLevel():
-	user_choice = ""
-	rightAnswer = ['easy','medium','hard']
+def checkAnswer(rightAnswer):
+	count = 0
+	user_choice =" "
 	while user_choice not in rightAnswer:
-		user_choice = raw_input("what level do you want to play: Easy | Medium | Hard\n").lower() 
+		count += 1
+		user_choice = raw_input("Whats the answer?\n").lower()
+		if count == 5: 
+			print 'Game Over'
+			exit() 
 	return user_choice	
-#letsPlay(sample)			
+
+letsPlay(sample,chooseLevel())			
 
 
 
