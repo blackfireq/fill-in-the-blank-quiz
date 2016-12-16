@@ -47,17 +47,21 @@ def checkAnswer(rightAnswer,placeHolder):
 	# sets the guess limit to 5 per answer
 	# returns guess if true
 	count = 0
+	total_guesses =5
 	user_choice =" "
 	while user_choice != rightAnswer:
 		count += 1
 		user_choice = raw_input("\nWhats the answer for "+placeHolder+"? ").lower()
-		if count == 5: 
+		if count == total_guesses: 
 			print '\nThat was your 5th fail. Game Over\n'
 			exit()
 	print "\nCorrect!!!!!!\n"		 
 	return user_choice	
 
 def letsPlay():
+	#start the game
+	#add right answers and displays the paragraph
+	# main function
 	index = 0
 	text,answers = chooseLevel()
 	print rules
