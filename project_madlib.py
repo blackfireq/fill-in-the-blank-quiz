@@ -1,62 +1,83 @@
 # Madlib project
-# Ask the user for the level of difficulty
-# some extra notes
 
 
 placeHolders = ['___1___','___2___','___3___','___4___']
-anwsers = [['function','quotes','nothing','list'],
-		   ['function','quotes','nothing','list'],
-           ['function','quotes','nothing','list']]
 
-sample = '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
-adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
-don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
-tuple, and ___4___ or can be more complicated such as objects and lambda functions.'''
+rules = "You will get 5 guesses per problem, Good Luck\n"
 
+answers = {'python' : ['world','python','print','html'],
+		   'harry potter' : ['harry','hogwarts','hermione','ron'],
+           'star wars' : ['force','jedi','sith','han']}           
 
-#check if word is one on the keywords
+text = { 
+'python' : '''A common first thing to do in a language is display
+'Hello ___1___!'  In ___2___ this is particularly easy; all you have to do
+is type in:
+__3__ "Hello ___1___!"
+Of course, that isn't a very useful thing to do. However, it is an
+example of how to output to the user using the ___3___ command, and
+produces a program which does something, so it is useful in that capacity.
 
+It may seem a bit odd to do something in a Turing complete language that
+can be done even more easily with an ___4___ file in a browser, but it's
+a step in learning ___2___ syntax, and that's really its purpose.''',
 
-# ask for answers for each answer one at a time then fill in the paragraph
-## get user input
-## go through string to find all instantances of the current answer
-## wash and repeat 
+'harry potter' : '''___1___ potter is a magical story about a magic users and muggels. it 
+starts off with ___1___ being excepted to ___2___ school of witchcraft and wizardy. 
+___1___'s best friends are ___3___ granger and ___4___ weasley.  
+''',
+
+'star wars' : '''Star Wars is a serious that united the generations. The series is based 
+around the use of the ___1___. There are ___2___ and ___3___ who are trained in the are of the
+force. ___2___ in the light and ___3___ in the dark. oh yeah, dont forget about ___4___ solo and chewbacca'''}
+
 
 def chooseLevel():
+	#prompts the user to select which trivia
+	#return the apropriate text and answers
 	user_choice = ""
-	rightAnswers = ['easy','medium','hard']
+	rightAnswers = ['python','harry potter','star wars']
 	while user_choice not in rightAnswers:
-		user_choice = raw_input("what level do you want to play: Easy | Medium | Hard\n").lower() 
-	return user_choice
+		user_choice = raw_input("what level do you want to play: Python | Harry Potter | Star Wars\n").lower()
+	print 'You chose '+user_choice+"!!!\n"	 
+	return text[user_choice],answers[user_choice]
 
-def letsPlay(text,difficulty_level):
+def checkAnswer(rightAnswer,placeHolder):
+	# checks to see if the guess matches the answer
+	# sets the guess limit to 5 per answer
+	# returns guess if true
+	count = 0
+	user_choice =" "
+	while user_choice != rightAnswer:
+		count += 1
+		user_choice = raw_input("\nWhats the answer for "+placeHolder+"? ").lower()
+		if count == 5: 
+			print '\nThat was your 5th fail. Game Over\n'
+			exit()
+	print "\nCorrect!!!!!!\n"		 
+	return user_choice	
+
+def letsPlay():
 	index = 0
-	print text
+	text,answers = chooseLevel()
+	print rules
 	while index < len(placeHolders):
+		print 'The current paragraph reads:'
+		print text
 		replaced = []
 		text = text.split(" ")
-		rightAnswers = anwsers[0] # need to fix later
-		user_choice = checkAnswer(rightAnswers[index])
+		rightAnswer = answers[index]
+		user_choice = checkAnswer(rightAnswer,placeHolders[index])
 		for word in text:
 			if placeHolders[index] in word:
 				word = word.replace(placeHolders[index],user_choice)
 			replaced.append(word)
 		text = " ".join(replaced)
-		print text
-		index +=1	
-	
-def checkAnswer(rightAnswer):
-	count = 0
-	user_choice =" "
-	while user_choice not in rightAnswer:
-		count += 1
-		user_choice = raw_input("Whats the answer?\n").lower()
-		if count == 5: 
-			print 'Game Over'
-			exit() 
-	return user_choice	
+		index +=1
+	print text	
+	print '\nCongrats on winning!!!\n'		
 
-letsPlay(sample,chooseLevel())			
+letsPlay()			
 
 
 
